@@ -100,12 +100,12 @@ contract EventTickets {
         This function takes 1 argument, an address and
         returns the number of tickets that address has purchased.
     */
-    function getBuyerTicketCount() 
+    function getBuyerTicketCount(address _addr) 
         view
         public
         returns(uint ticketsPurchased)
     {
-        ticketsPurchased = myEvent.buyers[msg.sender];
+        ticketsPurchased = myEvent.buyers[_addr];
     }
 
     /*
@@ -130,11 +130,11 @@ contract EventTickets {
         require(myEvent.totalTickets >= ticketsWanted);
         require(msg.value >= ticketsWanted * TICKET_PRICE);
         
+        myEvent.buyers[msg.sender] += ticketsWanted;
         myEvent.totalTickets -= ticketsWanted;
         address(msg.sender).transfer(msg.value - ticketsWanted * TICKET_PRICE);
         myEvent.sales += ticketsWanted;
         emit LogBuyTickets(msg.sender, ticketsWanted);
-        myEvent.buyers[msg.sender] += ticketsWanted;
     }
     /*
         Define a function called getRefund().

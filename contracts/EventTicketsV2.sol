@@ -192,8 +192,9 @@ contract EventTicketsV2 {
         checksOwner
     {
         require(idGenerator > id);
-        address(owner).transfer(address(this).balance);
-        emit LogEndSale(owner, address(this).balance, id);
+        uint bal = events[id].sales * PRICE_TICKET;
+        address(owner).transfer(bal);
+        emit LogEndSale(owner, bal, id);
         events[id].isOpen = false;
-    }  
+    }    
 }
